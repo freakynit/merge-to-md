@@ -1,0 +1,37 @@
+{
+  "name": "merge-to-md",
+  "description": "A simple Node.js CLI tool that recursively merges text/code files from a folder into a single Markdown file suitable for feeding as context to an LLM.",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "bin": {
+    "merge-to-md": "src/index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "run": "node src/index.js"
+  },
+  "engines": {
+    "node": ">=14"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/freakynit/merge-to-md.git"
+  },
+  "homepage": "https://github.com/freakynit/merge-to-md#readme",
+  "bugs": {
+    "url": "https://github.com/freakynit/merge-to-md/issues"
+  },
+  "keywords": [
+    "context",
+    "llm",
+    "merge",
+    "cli",
+    "markdown",
+    "developer-tools"
+  ],
+  "author": "Nitin Bansal <nitinbansal85@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "isbinaryfile": "^5.0.6"
+  }
+}
