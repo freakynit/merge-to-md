@@ -32,12 +32,20 @@ function parseArgs(argv) {
 }
 
 function usage() {
-  console.log('\nmerge-to-md.js\n');
-  console.log('Usage: node merge-to-md --input <folder> [--exclude "pat1,pat2"] [--output <file>]');
-  console.log('Short flags: -i, -e, -o');
+  console.log('Usage: node merge-to-md --input <folder> [OPTIONS]');
+  console.log('\nOptions:');
+  console.log('  -i, --input <folder>      Input folder to process (required)');
+  console.log('  -e, --exclude <patterns>  Comma-separated exclude patterns (RegExp)');
+  console.log('  -o, --output <file>       Output file path');
+  console.log('  -d, --dry-run             Show what would be processed without writing');
+  console.log('  -m, --max-depth <num>     Maximum directory depth to traverse');
+  console.log('  -l, --follow-symlinks     Follow symbolic links');
+  console.log('  -h, --help                Show this help message');
   console.log('\nEach exclude item is treated as a JavaScript RegExp (no leading/trailing slashes required).');
-  console.log('\nExample:');
-  console.log("  node merge-to-md -i ./src -e 'node_modules,\\.git' -o ./context.md\n");
+  console.log('\nExamples:');
+  console.log("  node merge-to-md -i ./src -e 'node_modules,\\.git' -o ./context.md");
+  console.log("  node merge-to-md --input=./src --exclude='test,spec' --dry-run");
+  console.log("  node merge-to-md -i ./project -m 3 --follow-symlinks -o merged.md\n");
 }
 
 function compileExcludeRegexes(excludeStr) {
