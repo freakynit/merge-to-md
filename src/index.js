@@ -23,9 +23,15 @@ function parseArgs(argv) {
     if (a.startsWith('--input=')) args.input = a.split('=')[1];
     if (a.startsWith('--exclude=')) args.exclude = a.split('=')[1];
     if (a.startsWith('--output=')) args.output = a.split('=')[1];
-    if (a.startsWith('--dry-run=')) args.dryRun = true;
+    if (a.startsWith('--dry-run=')) {
+      const v = a.split('=')[1].toLowerCase();
+      args.dryRun = !(v === '0' || v === 'false' || v === 'no');
+    };
     if (a.startsWith('--max-depth=')) args.maxDepth = Number(a.split('=')[1]);
-    if (a.startsWith('--follow-symlinks=')) args.followSymlinks = true;
+    if (a.startsWith('--follow-symlinks=')) {
+      const v = a.split('=')[1].toLowerCase();
+      args.followSymlinks = !(v === '0' || v === 'false' || v === 'no');
+    };
   }
 
   return args;
@@ -244,7 +250,7 @@ async function buildContext(files, root) {
 }
 
 async function main() {
-  const { input, exclude, output, help } = parseArgs(process.argv);
+  const { input, exclude, output, help, dryRun, maxDepth, followSymlinks } = parseArgs(process.argv);
   if (help || !input) {
     usage();
     process.exit(help ? 0 : 1);
@@ -265,10 +271,19 @@ async function main() {
 
   const excludeRegexes = compileExcludeRegexes(exclude);
 
-  const files = await collectFiles(inputPath, excludeRegexes);
+  const files = await collectFiles(inputPath, excludeRegexes, maxDepth, followSymlinks);
   if (!files.length) {
     console.error('No files found to process.');
     process.exit(4);
+  }
+
+  // If dry run, show what would be processed and skip writing file
+  if (dryRun) {
+    console.log('DRY RUN: would process the following files:\n');
+    for (const f of files) {
+      console.log(f.rel);
+    }
+    process.exit(0);
   }
 
   const context = await buildContext(files, inputPath);
